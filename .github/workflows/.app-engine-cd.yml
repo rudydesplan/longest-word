@@ -1,0 +1,26 @@
+# app-engine-cd.yml
+name: basic CD
+on:
+  push:
+    branches: [ master, main ]
+jobs:
+  deploy-to-app-engine:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+
+    # Checkout current branch
+    - uses: 'actions/checkout@v4.2.0'
+
+    # Authenticate via Service Account Key JSON
+    # See https://github.com/google-github-actions/auth#authenticating-via-service-account-key-json-1
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2.1.5'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+    # Use Google official GHA to deploy 🎉
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-appengine@v2.1.3'

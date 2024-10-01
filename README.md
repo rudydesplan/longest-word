@@ -94,12 +94,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # First step (unnamed here) is to checkout to the branch that triggered the event
-    - uses: actions/checkout@v3
-    # Second step: install python 3.8
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v4.2.0
+    # Second step: install python 3.12.6
+    - name: Set up Python 3.12.6
+      uses: actions/setup-python@v5.2.0
       with:
-        python-version: "3.8"
+        python-version: "3.12.6"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

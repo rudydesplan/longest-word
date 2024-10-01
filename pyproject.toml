@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 pytest = "^8.3.3"
 pylint = "^3.3.1"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]

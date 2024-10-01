@@ -1,4 +1,5 @@
 from longest_word.game import Game
+from unittest.mock import patch
 import string
 
 class TestGame:
@@ -52,7 +53,8 @@ class TestGame:
         new_game.grid = list(test_grid.upper())  # Convert grid to uppercase
         assert new_game.is_valid(test_word.upper()) is True
 
-    def test_repeated_letters(self):
+    @patch('longest_word.game.Game._Game__check_dictionary', return_value=True)
+    def test_repeated_letters(self, mock_check_dictionary):
         new_game = Game()
         test_grid = 'AABCC'
         test_word = 'AAC'
@@ -85,3 +87,9 @@ class TestGame:
         new_game.grid = []  # Manually empty the grid
         test_word = 'TEST'
         assert new_game.is_valid(test_word) is False
+
+    def test_unknown_word_is_invalid(self):
+        """A word that is not in the English dictionary should not be valid"""
+        new_game = Game()
+        new_game.grid = list('KWIENFUQW') # Force the grid to a test case:
+        assert new_game.is_valid('FEUN') is False

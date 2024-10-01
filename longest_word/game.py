@@ -6,6 +6,7 @@ letters and checks if a given word can be formed with those letters.
 
 import string
 import random
+import requests
 
 class Game:
     """
@@ -20,23 +21,49 @@ class Game:
 
     def is_valid(self, word: str) -> bool:
         """
-        Validates if the provided word can be formed with the letters in the current grid.
+        Validates if the provided word can be formed with the letters in the current grid
+        and exists in the dictionary.
 
         Args:
         word (str): The word to check.
 
         Returns:
-        bool: True if the word can be formed, False otherwise.
+        bool: True if the word can be formed and exists in the dictionary, False otherwise.
         """
         if not word:
             return False
-        letters = self.grid.copy()
+
+        letters = self.grid.copy()  # Copy the grid to avoid modifying the original
         for letter in word:
             if letter in letters:
-                letters.remove(letter)
+                print(f"Letter '{letter}' found in grid.")
+                letters.remove(letter)  # Remove only one occurrence of the letter
+                print(f"Remaining letters after removal: {letters}")
             else:
-                return False
-        return True
+                print(f"Letter '{letter}' not found in grid.")
+                return False  # Return False if there aren't enough occurrences of the letter
+
+        return self.__check_dictionary(word)
+
+    @staticmethod
+    def __check_dictionary(word: str) -> bool:
+        """
+        Check if the word exists in the dictionary by calling the API.
+
+        Args:
+        word (str): The word to check.
+
+        Returns:
+        bool: True if the word exists in the dictionary, False otherwise.
+        """
+        try:
+            response = requests.get(f"https://dictionary.lewagon.com/{word}")
+            response.raise_for_status()  # Ensure the request was successful
+            json_response = response.json()
+            return json_response.get('found', False)
+        except requests.exceptions.RequestException as e:
+            print(f"Error checking dictionary: {e}")
+            return False
 
     def refresh_grid(self) -> list:
         """

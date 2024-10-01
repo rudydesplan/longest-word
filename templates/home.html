@@ -1,0 +1,25 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <title>Longest Word</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <h1>Longest Word</h1>
+    <div>
+      {% for letter in grid %}
+        <span class="letter">{{ letter }}</span>
+      {% endfor %}
+    </div>
+    <!-- Let's build an input "form" so user can type letters -->
+    <form action="/check" id="form" method="post">
+      <!--hidden input form that contains the game.grid to be sent alongside the word letters-->
+      <input type="hidden" name="grid" value="{{ ''.join(grid) }}">
+      <!--explicit input form which forces content to uppercase since our `Game` logic only take care of uppercase letters-->
+      <input type="text" name="word" onkeyup="this.value = this.value.toUpperCase();">
+      <button>Check!</button>
+    </form>
+  </body>
+</html>
